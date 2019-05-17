@@ -247,9 +247,13 @@ public final class NewDriver {
                 if(System.getProperty(HEADLESS_MODE_PROPERTY) == null && shouldBeHeadless(args)) {
                     System.setProperty(HEADLESS_MODE_PROPERTY, "true");
                 }
+                //加载 jmeter 类
                 Class<?> initialClass = loader.loadClass("org.apache.jmeter.JMeter");// $NON-NLS-1$
+                // 获取 jmeter 类实例
                 Object instance = initialClass.getDeclaredConstructor().newInstance();
+                // 获取 start 方法类型实例
                 Method startup = initialClass.getMethod("start", new Class[] { new String[0].getClass() });// $NON-NLS-1$
+                // 反射获取 jmeter 类的 start 方法
                 startup.invoke(instance, new Object[] { args });
             } catch(Throwable e){ // NOSONAR We want to log home directory in case of exception
                 e.printStackTrace(); // NOSONAR No logger at this step

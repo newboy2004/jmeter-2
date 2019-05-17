@@ -437,9 +437,11 @@ public class JMeter implements JMeterPlugin {
      * @param args The arguments for JMeter
      */
     public void start(String[] args) {
+        // 解析命令行参数得类
         CLArgsParser parser = new CLArgsParser(args, options);
+        // 错误信息
         String error = parser.getErrorString();
-        if (error == null){// Check option combinations
+        if (error == null){// Check option combinations 检查选项组合
             boolean gui = parser.getArgumentById(NONGUI_OPT)==null;
             boolean nonGuiOnly = parser.getArgumentById(REMOTE_OPT)!=null
                                || parser.getArgumentById(REMOTE_OPT_PARAM)!=null
@@ -448,6 +450,7 @@ public class JMeter implements JMeterPlugin {
                 error = "-r and -R and -X are only valid in non-GUI mode";
             }
         }
+        // 输出错误信息
         if (null != error) {
             System.err.println("Error: " + error);//NOSONAR
             System.out.println("Usage");//NOSONAR
@@ -457,6 +460,7 @@ public class JMeter implements JMeterPlugin {
             return;
         }
         try {
+            // 初始化配置，同事初始化 jmeter 日志
             initializeProperties(parser); // Also initialises JMeter logging
 
             Thread.setDefaultUncaughtExceptionHandler(
